@@ -9,10 +9,10 @@ import { TimeTrendChart } from '@/components/charts/TimeTrendChart';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { format, isSameDay, subDays, startOfDay, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Activity, MessageSquare, MapPin, Tag, TrendingUp } from 'lucide-react';
+import { Activity, MessageSquare, MapPin, Tag, TrendingUp, RefreshCw } from 'lucide-react';
 
 export default function DashboardPage() {
-    const { feedbacks, regions, categories, initializeDemo } = useStore();
+    const { feedbacks, regions, categories, initializeDemo, isLoading } = useStore();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -53,7 +53,15 @@ export default function DashboardPage() {
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">Painel</h1>
+                <div className="flex items-center gap-4">
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">Painel</h1>
+                    {isLoading && (
+                        <div className="flex items-center gap-2 text-xs text-blue-500 animate-pulse bg-blue-500/10 px-2 py-1 rounded-full border border-blue-500/20">
+                            <RefreshCw className="h-3 w-3 animate-spin" />
+                            Sincronizando...
+                        </div>
+                    )}
+                </div>
                 <div className="text-xs md:text-sm text-[#a0a0b0]">
                     Última atualização: {format(new Date(), "dd 'de' MMMM, HH:mm", { locale: ptBR })}
                 </div>

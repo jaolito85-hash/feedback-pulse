@@ -1,34 +1,46 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { region, category, description, sentiment } = body;
+        const { region, category, description, sentiment, source = 'n8n' } = body;
 
         if (!description) {
             return NextResponse.json({ error: 'Description required' }, { status: 400 });
         }
 
-        // In a real app we would save to DB here.
-        // Since we are using client-side localStorage store, this API route 
-        // actually CANNOT access the client's localStorage. 
-        // This is a limitation of this prototype architecture.
-        // PROTOTYPE LIMITATION: The API route will just return success 
-        // and log received data, but it won't persist to the user's browser 
-        // unless we use a real database (SQLite/Postgres).
-        //
-        // For this prototype, I will just mock the success response.
-        // The user asked for "API Routes (para futura integração)".
+        // Get the first workspace as default for this demo
+        const { data: ws } = await supabase.from('workspaces').select('id').limit(1).single();
 
-        console.log('Webhook Received:', body);
+        if (!ws) {
+            return NextResponse.json({ error: 'No workspace found' }, { status: 500 });
+        }
+
+        const { data, error } = await supabase
+            .from('feedbacks')
+            .insert([{
+                workspace_id: ws.id,
+                region_id: region, // Expected to be an ID
+                category_id: category, // Expected to be an ID
+                description: description,
+                sentiment: sentiment || 'neutral',
+                source: source
+            }])
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        console.log('Feedback saved to Supabase:', data);
 
         return NextResponse.json({
             success: true,
-            id: `fb-${Date.now()}`,
-            message: "Data received (Prototype: not saved to localStorage specific user browser)"
+            id: data.id
         });
 
-    } catch (error) {
-        return NextResponse.json({ error: 'Invalid request' }, { status: 500 });
+    } catch (error: any) {
+        console.error('Webhook error:', error);
+        return NextResponse.json({ error: error.message || 'Invalid request' }, { status: 500 });
     }
 }
