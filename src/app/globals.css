@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@source "../../node_modules/@tremor/react/dist";
+
+@plugin "tailwindcss-animate";
+
+:root {
+  /* Light Mode Defaults (We will prioritize Dark but keep these valid) */
+  --background: #ffffff;
+  --foreground: #09090b;
+  /* zinc-950 */
+
+  /* Tremor specific - Light */
+  --tremor-brand-faint: #eff6ff;
+  --tremor-brand-muted: #bfdbfe;
+  --tremor-brand-subtle: #60a5fa;
+  --tremor-brand: #3b82f6;
+  --tremor-brand-emphasis: #1d4ed8;
+  --tremor-brand-inverted: #ffffff;
+
+  --tremor-background-muted: #f9fafb;
+  --tremor-background-subtle: #f3f4f6;
+  --tremor-background: #ffffff;
+  --tremor-background-emphasis: #374151;
+
+  --tremor-border: #e5e7eb;
+  --tremor-ring: #e5e7eb;
+
+  --tremor-content-subtle: #9ca3af;
+  --tremor-content: #6b7280;
+  --tremor-content-emphasis: #374151;
+  --tremor-content-strong: #111827;
+  --tremor-content-inverted: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* EXACT USER DESIGN COLORS */
+    --background: #0a0a0f;
+    /* Page background - deep navy black */
+    --foreground: #ffffff;
+    /* Primary text */
+
+    /* Custom Design Tokens */
+    --card-bg: #12121a;
+    --card-border: #1e1e2e;
+    --sidebar-bg: #0d0d14;
+    --input-bg: #1a1a24;
+    --input-border: #2a2a3a;
+    --text-secondary: #a0a0b0;
+    --text-muted: #6b6b80;
+
+    /* Tremor specific - Dark (User Design) */
+    --tremor-brand-faint: #0d0d14;
+    --tremor-brand-muted: #12121a;
+    --tremor-brand-subtle: #1e1e2e;
+    --tremor-brand: #3b82f6;
+    --tremor-brand-emphasis: #60a5fa;
+    --tremor-brand-inverted: #0a0a0f;
+
+    --tremor-background-muted: #0d0d14;
+    --tremor-background-subtle: #12121a;
+    --tremor-background: #0a0a0f;
+    --tremor-background-emphasis: #ffffff;
+
+    --tremor-border: #1e1e2e;
+    --tremor-ring: #2a2a3a;
+
+    --tremor-content-subtle: #6b6b80;
+    --tremor-content: #a0a0b0;
+    --tremor-content-emphasis: #ffffff;
+    --tremor-content-strong: #ffffff;
+    --tremor-content-inverted: #0a0a0f;
+  }
+}
+
+/* Force Dark Mode if class present, or just use media query. User asked for Dark Theme. 
+   We will default to dark styles in the app by ensuring the html usually has 'dark' or relying on media. 
+   For now, we mapped media query. */
+
+@theme {
+  --color-tremor-brand-faint: var(--tremor-brand-faint);
+  --color-tremor-brand-muted: var(--tremor-brand-muted);
+  --color-tremor-brand-subtle: var(--tremor-brand-subtle);
+  --color-tremor-brand: var(--tremor-brand);
+  --color-tremor-brand-emphasis: var(--tremor-brand-emphasis);
+  --color-tremor-brand-inverted: var(--tremor-brand-inverted);
+
+  --color-tremor-background-muted: var(--tremor-background-muted);
+  --color-tremor-background-subtle: var(--tremor-background-subtle);
+  --color-tremor-background: var(--tremor-background);
+  --color-tremor-background-emphasis: var(--tremor-background-emphasis);
+
+  --color-tremor-border: var(--tremor-border);
+  --color-tremor-ring: var(--tremor-ring);
+
+  --color-tremor-content-subtle: var(--tremor-content-subtle);
+  --color-tremor-content: var(--tremor-content);
+  --color-tremor-content-emphasis: var(--tremor-content-emphasis);
+  --color-tremor-content-strong: var(--tremor-content-strong);
+  --color-tremor-content-inverted: var(--tremor-content-inverted);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Tremor Overrides for Deep Dark Theme */
+.tremor-Card-root {
+  background-color: #12121a !important;
+  border-color: #1e1e2e !important;
+}
+
+.tremor-DonutChart-root path {
+  stroke: transparent !important;
+}
+
+.tremor-Legend-itemText {
+  color: #a0a0b0 !important;
+}
+
+/* Handle secondary text in tremor cards */
+.tremor-Card-root h3,
+.tremor-Card-root p:not(.text-white) {
+  color: #a0a0b0 !important;
+}
